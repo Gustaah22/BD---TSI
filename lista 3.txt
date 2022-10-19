@@ -1,0 +1,78 @@
+Use o banco Pubs
+1 - Utilize as tabelas Employee e Jobs e exiba cada empregado com seu respectivo cargo
+
+2 - Utilize as tabelas Publishers e Employee, e exiba cada editora com seus respectivos funcionários.
+
+3 - Exiba os autores que vivem na mesma cidade de uma editora.
+
+4 - Exiba nome do livro, preço, tipo, nome da editora, cidade e estado, de todos os livros publicados por editoras que não são da California. (California é um estado).
+
+Use o banco IBGE
+5 - Exiba o nome do estado e do municipio, de todos municípios que começam com "São "
+
+Use o banco Pokedex
+6 - Exiba uma relação de cada pokémon e seus tipos.
+
+7 - Exiba uma relação de todos os pokemon que tem fraqueza para "steel".
+
+8 - Para cada pokemon, exiba seu nome e o nome de quem ele evolui 
+
+
+
+1 - 
+select e.fname, e.lname, j.job_id, j.job_desc
+from employee E inner join jobs j
+on e.job_id = j.job_id
+
+
+2 -
+select p.pub_name, e.fname, e.lname
+from publishers p inner join employee e
+on p.pub_id = e.pub_id
+
+
+3 -
+select a.au_fname, a.city, p.city
+from authors a inner join publishers p
+on a.city = p.city
+
+
+4 - 
+select t.title, t.price, p.pub_name, p.state
+from titles t inner join publishers p 
+on t.pub_id = p.pub_id
+where p.state not like '%CA%'
+
+
+
+5 - 
+select e.estado_nNome, m.municipio_nome
+from Estado e inner join Municipio M
+on e.estado_codigo = m.estado_codigo
+where M.municipio_nome like 'São%' 
+
+
+
+6 - 
+select *
+from Pokemon p inner join TipoPokemon tp
+on p.codPokemon = tp.codPokemon
+inner join tipo t
+on tp.codTipo = t.codTipo
+
+
+7 - 
+select p.nome, t.nmTipo
+from Pokemon p inner join Fraqueza f
+on p.codPokemon = f.codPokemon
+inner join Tipo t
+on t.codTipo = f.CodTipo
+where t.nmTipo like 'steel'
+
+
+
+8 -
+select P1.nome, P2.nome as 'evolui de'
+from Pokemon P1 left outer join Pokemon P2
+on P1.evoluiDe = P2.codPokemon
+order by P1.codPokemon
