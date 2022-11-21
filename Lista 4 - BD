@@ -1,0 +1,61 @@
+//1 - Qual o peso do pokemon mais pesado?
+select nome, peso
+from Pokemon
+where peso = (select max(peso)
+from Pokemon)
+
+//2 - Quantos pokemons tem menos de 10 Kg?
+select count(*)
+from Pokemon
+where peso < 10
+
+//3 - Qual a altura média dos pokemons da categoria 130?
+select avg(altura)
+from Pokemon
+where codCategoria = 130
+
+//4 - Qual a altura do pokemon mais baixo?
+select nome, altura
+from Pokemon
+where altura = (select min(altura)
+from Pokemon)
+
+/* 5 - Qual o peso médio e a altura média de cada categoria de pokemon? 
+(resolva primeiro agrupando pelo código da categoria, depois use JOIN para mostrar o nome da categoria)
+*/
+select c.nmCategoria, avg(p.altura), avg(p.peso)
+from Pokemon as P inner join  Categoria as C
+ON p.codCategoria = c.codCategoria
+group by c.nmCategoria
+
+//6 - Quantos dias se passaram desde o seu nascimento?
+SELECT CAST(DATEDIFF(Day, '20010524', GETDATE()) AS VARCHAR) + ' dias' as 'Nasci há'
+
+--Use Pubs
+
+/* 7 - Crie uma relação que mostra quantos livros começam com cada letra.
+Ex: 
+A - 2
+C - 1
+D - 6
+*/
+select substring(title,1,1) as 'Litra inicial do livro ', count(title) as 'Quantidade'
+from titles
+group by substring(title,1,1)
+
+/* 8 - Quantos livros foram publicados em cada ano.
+(use pubdate).
+Ex: 1991 - 7 
+    2020 - 2
+*/
+select year(pubdate), count(title)
+from titles
+group by year(pubdate)
+
+/* 9 - Exiba quantos funcionarios estão em cada profissão.
+(Exiba primeiro pelo job_id, depois use JOIN para exibir o nome da profissão)
+*/
+select j.job_desc as 'Profissão', count(e.emp_id) as 'Funcionários'
+from employee as E inner join jobs as J
+on e.job_id = j.job_id
+group by j.job_desc
